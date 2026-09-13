@@ -24,3 +24,9 @@ public class ConsoleReaderDemo {
         System.out.println("Tổng số dòng đã nhập: " + count);
     }
 }
+
+//======================= Cau hoi suy luan =======================//
+
+//1. Vì sao cần InputStreamReader giữa System.in và BufferedReader?
+//2. readLine() trả về giá trị nào khi gặp EOF?
+//3. Vì sao ví dụ không đóng reader gắn với System.in?
