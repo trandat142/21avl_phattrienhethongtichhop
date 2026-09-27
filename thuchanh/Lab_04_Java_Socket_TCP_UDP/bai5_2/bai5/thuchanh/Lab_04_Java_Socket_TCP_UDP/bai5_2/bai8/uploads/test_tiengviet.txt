@@ -1,0 +1,7 @@
+Cộng hòa Xã hội Chủ nghĩa Việt Nam
+Độc lập - Tự do - Hạnh phúc
+
+Bài thực hành lập trình Socket TCP - Kiểm tra truyền nhận file tiếng Việt:
+- Xin chào các bạn sinh viên Khoa Công nghệ Thông tin!
+- Thử nghiệm các ký tự đặc biệt có dấu tiếng Việt: á, à, ả, ã, ạ, ă, ắ, ằ, ẳ, ẵ, ặ, â, ấ, ầ, ẩ, ẫ, ậ, đ, é, è, ẻ, ẽ, ẹ, ê, ế, ề, ể, ễ, ệ, í, ì, ỉ, ĩ, ị, ó, ò, ỏ, õ, ọ, ô, ố, ồ, ổ, ỗ, ộ, ơ, ớ, ờ, ở, ỡ, ợ, ú, ù, ủ, ũ, ụ, ư, ứ, ừ, ử, ữ, ự, ý, ỳ, ỷ, ỹ, ỵ.
+- Đảm bảo mã hóa UTF-8 được giữ nguyên 100% khi truyền qua Stream và lưu vào Server.
