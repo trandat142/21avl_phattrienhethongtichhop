@@ -22,6 +22,20 @@ public class MessageLogServer {
     private static final Path LOG_DIR = resolveLogDir();
 
     private static Path resolveLogDir() {
+        // 1. Chay truc tiep tu file nguon: java .../MessageLogServer.java
+        try {
+            var pd = MessageLogServer.class.getProtectionDomain();
+            var cs = (pd != null) ? pd.getCodeSource() : null;
+            if (cs != null && cs.getLocation() != null && "file".equalsIgnoreCase(cs.getLocation().getProtocol())) {
+                Path p = Path.of(cs.getLocation().toURI());
+                if (Files.isRegularFile(p) && p.getFileName().toString().endsWith(".java")) {
+                    return p.getParent().resolve("data").resolve("logs");
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 2. Chay tu file .class da compile
         try {
             URL url = MessageLogServer.class.getResource("MessageLogServer.class");
             if (url != null && "file".equalsIgnoreCase(url.getProtocol())) {
@@ -30,7 +44,25 @@ public class MessageLogServer {
             }
         } catch (Exception ignored) {
         }
-        return Path.of("thuchanh", "Lab_04_Java_Socket_TCP_UDP", "bai5_2", "bai7", "data", "logs");
+
+        // 3. Neu terminal dang dung trong thu muc bai7
+        Path currentDir = Path.of("").toAbsolutePath();
+        if (currentDir.endsWith("bai7")) {
+            return currentDir.resolve("data").resolve("logs");
+        }
+
+        // 4. Tim thu muc bai7 bang cach duyet nguoc tu thu muc hien tai len
+        Path targetDir = Path.of("thuchanh", "Lab_04_Java_Socket_TCP_UDP", "bai5_2", "bai7");
+        Path check = currentDir;
+        while (check != null) {
+            Path candidate = check.resolve(targetDir);
+            if (Files.isDirectory(candidate)) {
+                return candidate.resolve("data").resolve("logs");
+            }
+            check = check.getParent();
+        }
+
+        return targetDir.resolve("data").resolve("logs");
     }
 
     private static final DateTimeFormatter TIME_FORMAT =

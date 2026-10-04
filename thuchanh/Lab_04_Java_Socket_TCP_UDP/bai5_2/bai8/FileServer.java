@@ -19,6 +19,20 @@ public class FileServer {
     private static final Path UPLOAD_DIR = resolveUploadDir();
 
     private static Path resolveUploadDir() {
+        // 1. Chay truc tiep tu file nguon: java .../FileServer.java
+        try {
+            var pd = FileServer.class.getProtectionDomain();
+            var cs = (pd != null) ? pd.getCodeSource() : null;
+            if (cs != null && cs.getLocation() != null && "file".equalsIgnoreCase(cs.getLocation().getProtocol())) {
+                Path p = Path.of(cs.getLocation().toURI());
+                if (Files.isRegularFile(p) && p.getFileName().toString().endsWith(".java")) {
+                    return p.getParent().resolve("uploads");
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 2. Chay tu file .class da compile
         try {
             URL url = FileServer.class.getResource("FileServer.class");
             if (url != null && "file".equalsIgnoreCase(url.getProtocol())) {
@@ -27,7 +41,25 @@ public class FileServer {
             }
         } catch (Exception ignored) {
         }
-        return Path.of("thuchanh", "Lab_04_Java_Socket_TCP_UDP", "bai5_2", "bai8", "uploads");
+
+        // 3. Neu terminal dang dung trong thu muc bai8
+        Path currentDir = Path.of("").toAbsolutePath();
+        if (currentDir.endsWith("bai8")) {
+            return currentDir.resolve("uploads");
+        }
+
+        // 4. Tim thu muc bai8 bang cach duyet nguoc tu thu muc hien tai len
+        Path targetDir = Path.of("thuchanh", "Lab_04_Java_Socket_TCP_UDP", "bai5_2", "bai8");
+        Path check = currentDir;
+        while (check != null) {
+            Path candidate = check.resolve(targetDir);
+            if (Files.isDirectory(candidate)) {
+                return candidate.resolve("uploads");
+            }
+            check = check.getParent();
+        }
+
+        return targetDir.resolve("uploads");
     }
 
     public static void main(String[] args) {
